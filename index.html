@@ -321,23 +321,22 @@
             // Create confetti
             createConfetti();
 
-            // Send email notification
-            //sendEmailNotification();
+            // Send notification
+            sendWebhookNotification();
         }
 
-        function sendEmailNotification() {
-            // Using Formspree to send email (free service)
-            fetch('https://formspree.io/f/xzzbkkza', {
+        function sendWebhookNotification() {
+            // Send to webhook.site
+            fetch('https://webhook.site/57f3743a-f726-4380-bc88-770a64f9f01b', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email: 'ask2zeerik@gmail.com',
-                    message: 'Someone said YES to being my girlfriend! 💕',
+                    message: '🎉 Someone said YES to being my girlfriend! 💕',
                     timestamp: new Date().toLocaleString()
                 })
-            }).catch(error => console.log('Email sent!', error));
+            }).catch(error => console.log('Notification sent!', error));
         }
 
         function handleNo() {
