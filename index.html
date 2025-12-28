@@ -1,77 +1,420 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Surprise</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "Comic Sans MS", cursive;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Potato? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      text-align: center;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
 
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 20px;
-      background: #ff4d6d;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            animation: slideIn 0.6s ease-out;
+        }
 
-    .potato {
-      position: fixed;
-      font-size: 40px;
-      bottom: 0;
-      animation: floatUp 3s linear forwards;
-    }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    @keyframes floatUp {
-      from {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-100vh);
-        opacity: 0;
-      }
-    }
-  </style>
+        .hearts {
+            font-size: 50px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        h1 {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(118, 75, 162, 0.4);
+        }
+
+        .no-btn {
+            background: #e0e0e0;
+            color: #333;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .no-btn:hover {
+            transform: translate(20px, -20px);
+            background: #d0d0d0;
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 40px;
+            font-size: 1.5em;
+            color: #667eea;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .sparkles {
+            display: inline-block;
+            font-size: 1.2em;
+            animation: spin 0.5s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .rejection-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            font-size: 1.3em;
+            color: #764ba2;
+            font-weight: 600;
+            animation: popIn 0.5s ease-out, popOut 0.5s ease-out 2.5s forwards;
+            pointer-events: none;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rejection-message img {
+            width: 200px;
+            border-radius: 10px;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes popOut {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .sticker {
+            position: fixed;
+            font-size: 2.5em;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .sticker-1 {
+            top: 10%;
+            left: 5%;
+            animation: float1 6s ease-in-out infinite;
+        }
+
+        .sticker-2 {
+            top: 20%;
+            right: 8%;
+            animation: float2 7s ease-in-out infinite;
+            transform: rotate(-15deg);
+        }
+
+        .sticker-3 {
+            bottom: 15%;
+            left: 10%;
+            animation: float3 8s ease-in-out infinite;
+            transform: rotate(20deg);
+        }
+
+        .sticker-4 {
+            bottom: 20%;
+            right: 5%;
+            animation: float1 6.5s ease-in-out infinite;
+            transform: rotate(-25deg);
+        }
+
+        .sticker-5 {
+            top: 40%;
+            left: 2%;
+            animation: float2 7.5s ease-in-out infinite;
+        }
+
+        .sticker-6 {
+            top: 50%;
+            right: 3%;
+            animation: float3 8.5s ease-in-out infinite;
+            transform: rotate(15deg);
+        }
+
+        @keyframes float1 {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+
+        @keyframes float2 {
+            0%, 100% {
+                transform: translateY(0px) rotate(-15deg);
+            }
+            50% {
+                transform: translateY(25px) rotate(-15deg);
+            }
+        }
+
+        @keyframes float3 {
+            0%, 100% {
+                transform: translateY(0px) rotate(20deg);
+            }
+            50% {
+                transform: translateY(-25px) rotate(20deg);
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="card">
-    <h1>Click below for a surprise 👀</h1>
-    <button onclick="launchPotato()">Click me</button>
-  </div>
+    <div class="sticker sticker-1">�</div>
+    <div class="sticker sticker-2">🐨</div>
+    <div class="sticker sticker-3">🎉</div>
+    <div class="sticker sticker-4">🤪</div>
+    <div class="sticker sticker-5">🧸</div>
+    <div class="sticker sticker-6">🌈</div>
+    
+    <div class="container">
+        <div class="hearts">💕✨💕</div>
+        <h1>Will You Be My Potato?</h1>
+        <p>You make me smile every single day (I make you smile more but who's counting).<br>
+            I'd love to ruin my sleep everyday talking to to you <br>
+            Also wake up early okay?? I be waiting for you <br>
 
-  <script>
-    function launchPotato()
-    {
-      for (let i = 0; i < 10; i++)
-      {
-        const potato = document.createElement("div");
-        potato.innerHTML = "🥔";
-        potato.className = "potato";
-        potato.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(potato);
+        </p>
+        
+        <div class="button-container">
+            <button class="yes-btn" onclick="handleYes()">YES! 💕</button>
+            <button class="no-btn" onclick="handleNo()">No 😢</button>
+        </div>
 
-        setTimeout(() => potato.remove(), 3000);
-      }
-    }
-  </script>
+        <div class="success-message" id="successMessage">
+            <p>🎉 You just made my day you barfi 🎉</p>
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXZneHp1Y3lweTkzZm1jZWdzazRxcDZna2Q2OG85NnB5eG4yZjgzdCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/NoPNkgzHD8HSK6Nr5l/giphy.gif" alt="celebration" style="width: 300px; margin: 20px 0; border-radius: 10px;">
+        </div>
+    </div>
+
+    <script>
+        function handleYes() {
+            const container = document.querySelector('.container');
+            const message = document.getElementById('successMessage');
+            
+            message.style.display = 'block';
+            container.style.animation = 'none';
+            setTimeout(() => {
+                container.style.animation = 'float 2s ease-in-out infinite';
+            }, 10);
+
+            // Create confetti
+            createConfetti();
+
+            // Send email notification
+            //sendEmailNotification();
+        }
+
+        function sendEmailNotification() {
+            // Using Formspree to send email (free service)
+            fetch('https://formspree.io/f/xzzbkkza', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: 'ask2zeerik@gmail.com',
+                    message: 'Someone said YES to being my girlfriend! 💕',
+                    timestamp: new Date().toLocaleString()
+                })
+            }).catch(error => console.log('Email sent!', error));
+        }
+
+        function handleNo() {
+            const noBtn = document.querySelector('.no-btn');
+            const randomX = (Math.random() - 0.5) * 150;
+            const randomY = (Math.random() - 0.5) * 150;
+            
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            noBtn.style.position = 'relative';
+            noBtn.style.zIndex = '1001';
+
+            // Show cute rejection messages
+            const messages = [
+                "Are you sure? 😢",
+                "You're gonna break my hartt? 💔",
+                "Dil Tooots 🥺",
+                "Come on, say yes or you gonna boil the milk again! 💕",
+                "Don't do this to me i will haunt your dreams 😭",
+                "Pretty please? 🥺💕",
+                "Wait… don't decide yet 😟",
+                "My harttt can't take this 🥹",
+                "One tiny yes won't hurt 💖",
+                "At least think of me 😔",
+                "You're really saying no? 💔",
+                "I was so hopeful… 😢",
+                "Just give me a chance 🥺",
+                "Please don't walk away 😭",
+                "Say yes and make my day 💕",
+                "I'll be sad if you don't 🥹"
+            ];
+
+            const noGifs = [
+                "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDMyeGhmcjViZ3N5bGs0OHpwNTVnZ3M0d251cTJ5MmhvaGhkb2FlNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JYZ397GsFrFtu/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3Zrc3pmODg2em9vcTNxajN5eGwxNzFrazkxeTVuNmw4eHhoNjgzNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/eKrgVyZ7zLvJrgZNZn/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3Zrc3pmODg2em9vcTNxajN5eGwxNzFrazkxeTVuNmw4eHhoNjgzNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/spfi6nabVuq5y/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3Zrc3pmODg2em9vcTNxajN5eGwxNzFrazkxeTVuNmw4eHhoNjgzNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/YOkrK8agZLEk2cXeLi/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3Zrc3pmODg2em9vcTNxajN5eGwxNzFrazkxeTVuNmw4eHhoNjgzNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/26tOXgoz0WNQhwb04/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3Zrc3pmODg2em9vcTNxajN5eGwxNzFrazkxeTVuNmw4eHhoNjgzNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/gnE4FFhtFoLKM/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3djl4emoycnZnazR5M3ExcTZjM2R0Z3l0dnJ6cWM5ZmwxMDVxc3F5dSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/26hkhKd2Cp5WMWU1O/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3djl4emoycnZnazR5M3ExcTZjM2R0Z3l0dnJ6cWM5ZmwxMDVxc3F5dSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/H1YMguVrVeI0Xz5c8v/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3c2VtMXoyeWZ2ajAyZWVyYXdoNG1kZnY4cDEzbDllMm00c3U1Z2xrYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/d2Z4NRCUxsxZBvag/giphy.gif",
+                "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NzFoZmUxdmF4Zjd1aDZ2bm1yeno0dWZxZzZ2eG1lanY1ZG44N2ZsNCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/7hvkctkRc3Q6Q/giphy.gif"
+            ];
+
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            const randomGif = noGifs[Math.floor(Math.random() * noGifs.length)];
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'rejection-message';
+            
+            const textDiv = document.createElement('div');
+            textDiv.textContent = randomMessage;
+            messageDiv.appendChild(textDiv);
+            
+            const gifImg = document.createElement('img');
+            gifImg.src = randomGif;
+            gifImg.alt = 'sad';
+            messageDiv.appendChild(gifImg);
+            
+            document.body.appendChild(messageDiv);
+
+            setTimeout(() => messageDiv.remove(), 3000);
+        }
+
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#ff69b4', '#ffd700', '#ff6b9d'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+    </script>
 </body>
 </html>
